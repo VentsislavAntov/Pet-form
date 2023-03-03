@@ -1,22 +1,18 @@
-import logo from './logo.svg';
+import { Routes, Route } from "react-router-dom"
 import './App.css';
+import FormGeneric from './components/FormGeneric/FormGeneric';
+import CountryForm from './components/CountryForm/CountryForm';
+import WrongPath from './components/WrongPath/WrongPath';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <Routes>
+          <Route path="/" element={ <FormGeneric/> } />
+          <Route path="/country-form" element={ <CountryForm/> } />
+          <Route path="*" element={ <WrongPath/> } />
+        </Routes>
       </header>
     </div>
   );

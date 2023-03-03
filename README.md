@@ -68,3 +68,17 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+
+The following functionalities have been implemented:
+- Working generic form for pet and country selection
+- Dynamic selection from csv file data for controls and 2nd form template (some places)
+- CSV file adapted with the actual pdf links
+- Control checks applied before 2nd form submission to provide eligibility functionality. These have been dictated and include logic based on the country/pet and other information present in the CSV
+
+TODO if more time was allocated:
+- Adapt to typescript and add testing
+- Add a functionality for downloading, editing and saving the updated PDF file with the form data. (Will work maybe only for the generic form as they differ). More thought needs to be put into how to make it work for all forms - research wheather selection on title is feasible for example. 
+- Better styling
+- Add more information required in the PDF, but not a control related as per the csv (such as first name). Could also potentially store the files submitted by the user

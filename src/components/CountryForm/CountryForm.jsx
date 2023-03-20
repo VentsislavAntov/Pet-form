@@ -1,7 +1,8 @@
-import React, { useState} from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState, useEffect} from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./CountryForm.module.css";
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
+import Footer from "../Footer/Footer";
 
 /**
  * First form which selects country and pet which is then used for the 2nd form
@@ -10,9 +11,17 @@ import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
  */
 const CountryForm = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const country = location.state ? location.state.country : "";
   const pet = location.state ? location.state.pet : "";
   const passedData = location.state ? location.state.data : "";
+  
+  useEffect(() => {
+    // Redirect to 404 route if either country or pet is not defined
+    if (!country || !pet) {
+      navigate('/404');
+    }
+  }, [country, pet, navigate]);
 
   // Transforming item of interest into object to pass to second form
   const filteredData = () => {
@@ -35,6 +44,7 @@ const CountryForm = () => {
     return result || [];
   }
   const data = location.state ? filteredData() : {};
+  const flagImage = data.Flag_image_url;
 
   // dynamically selecting required vaccinations. If time allows, this can be split into
   // several items, each with their own checkbox
@@ -46,7 +56,7 @@ const CountryForm = () => {
   const [isMicrochipped, setIsMicrochipped] = useState(false);
   const [hasTattoo, setHasTattoo] = useState(false);
   const [hasVaccination, setHasVaccination] = useState(false);
-  const [rabiesDuration, setRabiesDuration] = useState("");
+  const [rabiesDate, setRabiesDate] = useState("");
   const [hasRabiesTiterTest, setHasRabiesTiterTest] = useState(false);
   const [hasTicksAndTapewormTreatment, setHasTicksAndTapewormTreatment] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
@@ -72,7 +82,7 @@ const CountryForm = () => {
   };
 
   const handleRabiesDurationChange = (event) => {
-    setRabiesDuration(event.target.value);
+    setRabiesDate(event.target.value);
   };
 
   const handleHasRabiesTiterTestChange = (event) => {
@@ -91,7 +101,7 @@ const CountryForm = () => {
       isMicrochipped,
       hasTattoo,
       hasVaccination,
-      rabiesDuration,
+      rabiesDate,
       hasRabiesTiterTest,
       hasTicksAndTapewormTreatment,
     };
@@ -110,14 +120,24 @@ const CountryForm = () => {
       return;
     }
     if (pet === 'Dog') {
-      // dog specific check on rabbies vaccination date
-      if (!rabiesDuration || parseInt(rabiesDuration) < parseInt(data.RabiesMinDays)) {
-        setPopupMessage(`Rabbies vaccine days past needs to be more than ${data.RabiesMinDays} days`);
+      if (!rabiesDate) {
+        setPopupMessage('Rabbies vaccine date is empty');
         return;
       }
-      // May need more accuracy, but the csv specifies only 'months', so it's good for now
-      if (data.RabiesMaxMonths && parseInt(data.RabiesMaxMonths)*30 < parseInt(rabiesDuration)) {
-        setPopupMessage(`Rabbies vaccine days past needs to be less than ${data.RabiesMaxMonths} months`);
+      const convertedRabiesDate = new Date(rabiesDate);
+      const today = new Date();
+      const dateDaysAgo = new Date(today.setDate(today.getDate() - data.RabiesMinDays));
+      let dateMonthsAgo
+      if (data.RabiesMaxMonths) {
+        dateMonthsAgo = new Date(today.setMonth(today.getMonth() - parseInt(data.RabiesMaxMonths)));
+      }
+      // dog specific check on rabbies vaccination date
+      if (convertedRabiesDate > dateDaysAgo) {
+        setPopupMessage(`Rabbies vaccine date needs to be more than ${data.RabiesMinDays} days old`);
+        return;
+      }
+      if (data.RabiesMaxMonths && dateMonthsAgo > convertedRabiesDate) {
+        setPopupMessage(`Rabbies vaccine date past needs to be less than ${data.RabiesMaxMonths} months old`);
         return;
       }
     }
@@ -182,70 +202,79 @@ const CountryForm = () => {
   return (
     <>
       {popupMessage === "" && <div className={styles.container}>
-        <h2>New Form</h2>
         <p>Country: {country}</p>
+        <img src={flagImage} alt="flag" style={{ width: '100px', height: 'auto', border: '1px solid black' }} />
         {data.ImportPermit === 'Yes' && <span> (requires an import permit) </span>}
         {data.ImportPermit === 'No (personal pet)' && <span> (requires an import permit for personal pet) </span>}
         <p>Pet: {pet}</p>
         <form className={styles.form} onSubmit={handleSubmit}>
         <label className={styles.label}>
           <span className={styles.labelTextName}>First Name:</span>
-          <input type="text" value={firstName} onChange={handleFirstNameChange} />
+          <input type="text" value={firstName} onChange={handleFirstNameChange} placeholder="Vince" />
         </label>
         <br />
         <label className={styles.label}>
           <span className={styles.labelTextName}>Last Name:</span>
-          <input type="text" value={lastName} onChange={handleLastNameChange} />
+          <input type="text" value={lastName} onChange={handleLastNameChange} placeholder="Antov" />
         </label>
         <br />
-        <label className={styles.label}>
-          <span className={styles.labelText}>Pet is microchipped:</span>
-          <input type="checkbox" checked={isMicrochipped} onChange={handleIsMicrochippedChange} />
-        </label>
-        <br />
-        <label className={styles.label}>
-          <span className={styles.labelText}>Pet has ID tattoo:</span>
-          <input type="checkbox" checked={hasTattoo} onChange={handleHasTattooChange} />
-        </label>
+        {data.PetMicrochip === 'Yes' && (
+          <>
+            <label className={styles.label}>
+              <span className={styles.labelText}>Pet is microchipped:</span>
+              <input type="checkbox" checked={isMicrochipped} onChange={handleIsMicrochippedChange} />
+            </label>
+            <br />
+            <label className={styles.label}>
+              <span className={styles.labelText}>Pet has ID tattoo:</span>
+              <input type="checkbox" checked={hasTattoo} onChange={handleHasTattooChange} />
+            </label>
+            <br />
+          </>
+        )}
         <br />
         <label className={styles.label}>
           <span className={styles.labelText}>{pet} vaccination for {requiredVaccinations}:</span>
           <input type="checkbox" checked={hasVaccination} onChange={handleHasVaccinationChange} />
         </label>
         <br />
-          {pet === "Dog" && (
-            <div className="inputContainer">
-              <label className={styles.label}>
-              <span className={styles.labelTextRabies}>How long ago was the rabbies vaccine (in days):</span>
+        {pet === "Dog" && (
+          <div className="inputContainer">
+            <label className={styles.label}>
+              <span className={styles.labelTextRabies}>When was the rabbies vaccine made:</span>
             <input
-              type="number"
-              value={rabiesDuration}
+              type="date"
+              value={rabiesDate}
               onChange={handleRabiesDurationChange}
             />
             </label>
             <br />
-            </div>
+          </div>
+        )}
+          {data.RabiesTiterTest === 'Yes' && (
+            <>
+            <label className={styles.label}>
+              <span className={styles.labelText}>Rabies titer test:</span>
+              <input type="checkbox" checked={hasRabiesTiterTest} onChange={handleHasRabiesTiterTestChange} />
+            </label>
+            <br />
+            </>
           )}
-          <label className={styles.label}>
-            <span className={styles.labelText}>Rabies titer test:</span>
-          <input
-            type="checkbox"
-            checked={hasRabiesTiterTest}
-            onChange={handleHasRabiesTiterTestChange}
-          />
-          </label>
-          <br />
-          <label className={styles.label}>
-            <span className={styles.labelText}>Has Ticks And Tapeworm Treatment:</span>
-          <input
-            type="checkbox"
-            checked={hasTicksAndTapewormTreatment}
-            onChange={handleHasTicksAndTapewormTreatmentChange}
-          />
-          </label>
-          <br />
-          <button type="submit" onSubmit={handleSubmit}>Submit</button>
+          {data.TicksAndTapewormTreatment === 'Yes' ? (
+            <>
+              <label className={styles.label}>
+                <span className={styles.labelText}>Has Ticks And Tapeworm Treatment:</span>
+                <input
+                  type="checkbox"
+                  checked={hasTicksAndTapewormTreatment}
+                  onChange={handleHasTicksAndTapewormTreatmentChange} />
+              </label>
+              <br />
+            </>
+          ) : null}
+          <button type="submit" onSubmit={handleSubmit}>Generate PDF</button>
         </form>
+        <Footer stepNumber={2} />
       </div>
       }
        {popupMessage && (

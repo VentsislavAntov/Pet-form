@@ -24,7 +24,7 @@ select, input[type="radio"] {
 
 .button {
   display: inline-block;
-  background-color: #4CAF50;
+  background-color: #FF3C15;
   color: white;
   text-align: center;
   font-size: 16px;
@@ -37,12 +37,12 @@ select, input[type="radio"] {
 }
 
 .button:hover {
-  background-color: #3e8e41;
+  background-color: #D03111;
 }
 
 .buttonDisabled {
   display: inline-block;
-  background-color: #acbbac;
+  background-color: #CCCCCC;
   color: white;
   text-align: center;
   font-size: 16px;
@@ -71,4 +71,43 @@ select {
   border-radius: 4px;
   box-sizing: border-box;
   margin-bottom: 10px;
+}
+
+.radio {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  outline: none;
+  width: 1.2em;
+  height: 1.2em;
+  border: 2px solid #068E96;
+  border-radius: 50%;
+  margin-right: 10px;
+  background-color: white;
+  position: relative;
+}
+
+input[type="radio"]::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  height: 60%;
+  border-radius: 50%;
+  background-color: #07B1BC;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+input[type="radio"]:checked::before {
+  opacity: 1;
 }

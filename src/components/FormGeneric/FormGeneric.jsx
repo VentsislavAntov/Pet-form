@@ -3,6 +3,7 @@ import styles from "./FormGeneric.module.css";
 import Papa from "papaparse";
 import csvFile from "../../Data/DataManipulated.csv"
 import { Link } from "react-router-dom";
+import Footer from "../Footer/Footer";
 
 const FormGeneric = () => {
   const [countries, setCountries] = useState([]);
@@ -82,6 +83,7 @@ const FormGeneric = () => {
           Submit
         </Link>
       </form>
+      <Footer stepNumber={1} />
     </div>
   );
 };

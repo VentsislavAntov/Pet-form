@@ -21,14 +21,15 @@ select, input[type="radio"] {
 button[type="submit"] {
   margin-top: 20px;
   padding: 10px;
-  background-color: #007bff;
+  background-color: #FF3C15;
   color: #fff;
   border: none;
+  border-radius: 5px;
   cursor: pointer;
 }
 
 button[type="submit"]:hover {
-  background-color: #0069d9;
+  background-color: #D03111;
 }
 
 select {
@@ -57,7 +58,7 @@ select {
 .labelTextRabies {
   display: inline-block;
   text-align: left;
-  width: 475px;
+  width: 500px;
   font-size: 14px !important;
 }
 
@@ -86,7 +87,7 @@ select {
   padding: 2rem;
   border: 2px solid black;
   max-width: 400px;
-  color: red;
+  color: #D90851;
 }
 
 .closeButton {
@@ -95,6 +96,44 @@ select {
   right: 0;
   font-size: 1.5rem;
   cursor: pointer;
+  background-color: #D90851;
 }
 
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  outline: none;
+  width: 1.2em;
+  height: 1.2em;
+  border: 2px solid #068E96;
+  border-radius: 4px;
+  background-color: #07B1BC;
+  position: relative;
+}
 
+input[type="checkbox"]::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg) scaleX(-1);
+  width: 30%; /* adjust the size of the checkmark */
+  height: 60%; /* adjust the size of the checkmark */
+  border: 2px solid white;
+  border-top: none;
+  border-right: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+input[type="checkbox"]:checked::before {
+  opacity: 1;
+}
+
+input[type="text"] {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+}

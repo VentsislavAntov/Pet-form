@@ -1,0 +1,18 @@
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.App {
+  flex: 1;
+}
+
+.footer {
+  width: -webkit-fill-available;
+  background-color: #9d92f5;
+  padding: 10px;
+  text-align: center;
+  position: sticky;
+  bottom: 0;
+}

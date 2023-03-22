@@ -1,9 +1,19 @@
-import styles from './FormGeneric.module.css'
+import styles from "./FormGeneric.module.css";
 import React, { useState, useEffect } from "react";
-import { makeStyles } from '@material-ui/core/styles';
-import { FormControl, InputLabel, Select, MenuItem, Radio, RadioGroup, FormControlLabel, Button, Grid, Typography } from '@material-ui/core';
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  Grid,
+  Typography,
+} from "@material-ui/core";
 import Papa from "papaparse";
-import csvFile from "../../Data/DataManipulated.csv"
+import csvFile from "../../Data/DataManipulated.csv";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -79,24 +89,40 @@ const FormGeneric = () => {
         setData(records);
         const countries = records.slice(1).map((item) => item[0]);
         setCountries(countries);
-      }
+      },
     });
   }, []);
 
   return (
     <div className={styles.container}>
+      <Grid container>
+        <Grid item xs={8}>
+          <Typography variant="h5" component="h1" align="left">
+            Travel with your Pet
+          </Typography>
+          <Typography
+            align="left"
+            variant="body1"
+            style={{ paddingBottom: "20px" }}
+          >
+            Select country and pet type
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <div style={{ display: "flex", justifyContent: "flex-start" }}>
+            <span href="#" className={styles.buttonLinkCurrent} disabled>
+              Initial Form
+            </span>
+            <span className={styles.arrow}>→</span>
+            <span href="#" className={styles.buttonLinkDisabled} disabled>
+              Country Form
+            </span>
+          </div>
+        </Grid>
+        <hr />
+      </Grid>
       <form className={styles.form}>
-        <div className={styles.buttonContainer}>
-          <span href="#" className={styles.buttonLinkCurrent} disabled>Generic Form</span>
-          <span className={styles.arrow}>→</span>
-          <span href="#" className={styles.buttonLinkDisabled} disabled>Country Form</span>
-        </div>
-        <Grid container justify="center" alignItems="center" spacing={2}>
-          <Grid item xs={12}>
-            <Typography variant="h4" component="h1" align="center">
-              Travel with your Pet
-            </Typography>
-          </Grid>
+        <Grid container justifyContent="center" alignItems="center" spacing={2}>
           <Grid item xs={12}>
             <FormControl fullWidth className={classes.select}>
               <InputLabel id="country-label">Destination Country</InputLabel>
@@ -110,25 +136,40 @@ const FormGeneric = () => {
                   <em>Select a country</em>
                 </MenuItem>
                 {countries.map((country, index) => (
-                  <MenuItem key={index} value={country}>{country}</MenuItem>
+                  <MenuItem key={index} value={country}>
+                    {country}
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>
           </Grid>
           <Grid item xs={12}>
             <FormControl component="fieldset">
-              <Grid container justify="center" alignItems="center">
-                <Typography variant="h6" component="h1" align="center" style={{ paddingBottom: "11px" }}>
-             Pet Type
-            </Typography>
+              <Grid container justifyContent="center" alignItems="center">
+                <Typography
+                  variant="h6"
+                  component="h1"
+                  align="center"
+                  style={{ paddingBottom: "11px" }}
+                >
+                  Pet Type
+                </Typography>
                 <Grid item>
                   <RadioGroup
                     className={classes.radioGroup}
                     value={selectedPet}
                     onChange={handlePetChange}
                   >
-                    <FormControlLabel value="Cat" control={<Radio />} label="Cat" />
-                    <FormControlLabel value="Dog" control={<Radio />} label="Dog" />
+                    <FormControlLabel
+                      value="Cat"
+                      control={<Radio />}
+                      label="Cat"
+                    />
+                    <FormControlLabel
+                      value="Dog"
+                      control={<Radio />}
+                      label="Dog"
+                    />
                   </RadioGroup>
                 </Grid>
               </Grid>
@@ -136,13 +177,21 @@ const FormGeneric = () => {
           </Grid>
           <Grid item xs={12}>
             <Link
-              to={selectedCountry && selectedPet ? {
-                pathname: "/country-form",
-              } : {}}
+              to={
+                selectedCountry && selectedPet
+                  ? {
+                      pathname: "/country-form",
+                    }
+                  : {}
+              }
               state={{ country: selectedCountry, pet: selectedPet, data }}
-              className={selectedCountry && selectedPet ? classes.button : classes.buttonDisabledGrey}
+              className={
+                selectedCountry && selectedPet
+                  ? classes.button
+                  : classes.buttonDisabledGrey
+              }
             >
-              Submit
+              Continue
             </Link>
           </Grid>
         </Grid>

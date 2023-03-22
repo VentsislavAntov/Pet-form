@@ -77,6 +77,15 @@ The following functionalities have been implemented:
 - CSV file adapted with the actual pdf links
 - Control checks applied before 2nd form submission to provide eligibility functionality. These have been dictated and include logic based on the country/pet and other information present in the CSV
 
+2nd Iteration of frontend work achieved the following:
+- Added sample header
+- Added sample sidebar menu
+- Addes more sample input fields and sections
+- Addes sample step navigator at the top (Does not prefill data, but navigates correctly and no further steps have been added because of the need to introduce global state management which I I would say is out of scope). As dictated, can't step backwards.
+- Styling added everywhere using the material-ui React component library
+- Overall component allocation and hierarchy/architecture of components improved. Note that the country form component can definitely be further split into subsections and reusable components, but I am picking my battles in terms of time spent
+- Minimum questions now asked for the PDF Generate requirements. Only what is required is asked.
+
 TODO if more time was allocated:
 - Adapt to typescript and add testing
 - Add a functionality for downloading, editing and saving the updated PDF file with the form data. (Will work maybe only for the generic form as they differ). More thought needs to be put into how to make it work for all forms - research wheather selection on title is feasible for example. 

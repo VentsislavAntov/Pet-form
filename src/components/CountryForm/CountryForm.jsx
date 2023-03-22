@@ -18,6 +18,7 @@ import {
   Checkbox,
   Select,
   InputAdornment,
+  Paper,
 } from "@material-ui/core";
 /**
  * First form which selects country and pet which is then used for the 2nd form
@@ -233,25 +234,13 @@ const CountryForm = () => {
     <>
       {popupMessage === "" && (
         <div className={styles.container}>
-          <form className={styles.form} onSubmit={handleSubmit}>
-<div className={styles.buttonContainer}>
-  <Link
-    to={{
-      pathname: "/",
-      state: {
-        country,
-        pet,
-      },
-    }}
-    className={styles.buttonLink}
-  >
-    Generic Form
-  </Link>
-  <span className={styles.arrow}>→</span>
-  <span href="#" className={styles.buttonLinkCurrent} disabled>Country Form</span>
-</div>
-            <Grid container spacing={2} style={{ display: "flex" }}>
-              <Grid item sm={6}>
+          <Grid
+            container
+            spacing={2}
+            style={{ display: "flex", justifyContent: "flex-start" }}
+          >
+            <Grid item xs={12}>
+              <div style={{ display: "flex", alignItems: "left" }}>
                 <Typography
                   align="left"
                   variant="subtitle1"
@@ -259,48 +248,76 @@ const CountryForm = () => {
                   style={{
                     fontWeight: "bold",
                     marginTop: "8px",
-                    fontSize: "30px",
+                    fontSize: "17px",
+                    wordWrap: "break-word",
                   }}
                 >
-                  Pet Form
+                  Pet Travel Requirements for {country}
                 </Typography>
-                <Typography align="left" variant="body1">
-                  Pet type: {pet}
-                </Typography>
-                <div style={{ display: "flex", alignItems: "left" }}>
-                  <Typography
+                <div className={styles.imageContainer}>
+                  <img
+                    src={flagImage}
                     align="left"
-                    variant="body1"
-                    style={{ marginRight: "8px" }}
-                  >
-                    Country: {country}
-                  </Typography>
-                <img
-                  src={flagImage}
-                  align="left"
-                  alt="flag"
-                  style={{
-                    width: "30px",
-                    height: "20px",
-                    border: "1px solid black",
-                    marginRight: "10px"
-                  }}
-/>
+                    alt="flag"
+                    style={{
+                      width: "30px",
+                      height: "20px",
+                      border: "1px solid black",
+                      marginRight: "10px",
+                    }}
+                  />
                 </div>
-                {data.ImportPermit === "Yes" && (
-                  <Typography align="left" variant="body1">
-                    (requires an import permit)
-                  </Typography>
-                )}
-                {data.ImportPermit === "No (personal pet)" && (
-                  <Typography align="left" variant="body1">
-                    (requires an import permit for personal pet)
-                  </Typography>
-                )}
-              </Grid>
+              </div>
+              <Typography align="left" variant="body1">
+                This form collects owner details, pet details and pet
+                requirements.
+              </Typography>
+              <Typography align="left" variant="body1">
+                Your pet type: {pet}
+              </Typography>
+              {data.ImportPermit === "Yes" && (
+                <Typography align="left" variant="body1">
+                  (requires an import permit)
+                </Typography>
+              )}
+              {data.ImportPermit === "No (personal pet)" && (
+                <Typography align="left" variant="body1">
+                  (requires an import permit for personal pet)
+                </Typography>
+              )}
             </Grid>
-
+            <div className={styles.buttonContainer}>
+              <Link
+                to={{
+                  pathname: "/",
+                  state: {
+                    country,
+                    pet,
+                  },
+                }}
+                className={styles.buttonLink}
+              >
+                Initial Form
+              </Link>
+              <span className={styles.arrow}>→</span>
+              <span href="#" className={styles.buttonLinkCurrent} disabled>
+                Country Form
+              </span>
+            </div>
+          </Grid>
+          <form className={styles.form} onSubmit={handleSubmit}>
             <Grid container spacing={2}>
+              <Grid item xs={12} sm={12} style={{ paddingBottom: "0" }}>
+                <Typography
+                  style={{ fontWeight: "bold", marginTop: "10px" }}
+                  fontWeight="bold"
+                  align="left"
+                  variant="h6"
+                  gutterBottom
+                >
+                  Owner Details
+                </Typography>
+              </Grid>
               <Grid item xs={12} sm={6}>
                 <Typography
                   align="left"
@@ -352,8 +369,19 @@ const CountryForm = () => {
                 </FormControl>
               </Grid>
             </Grid>
-
             <Grid container spacing={2}>
+              <Grid item xs={12} sm={12} style={{ paddingBottom: "0" }}>
+                <div className={styles.divider} />
+                <Typography
+                  style={{ fontWeight: "bold", marginTop: "10px" }}
+                  fontWeight="bold"
+                  align="left"
+                  variant="h6"
+                  gutterBottom
+                >
+                  Pet Details
+                </Typography>
+              </Grid>
               <Grid item xs={12} sm={6}>
                 <Typography
                   align="left"
@@ -430,96 +458,127 @@ const CountryForm = () => {
                   align="left"
                   variant="subtitle1"
                   fontWeight="bold"
-                  style={{ fontWeight: "bold", marginTop: "8px" }}
+                  style={{ fontWeight: "bold", marginTop: "24px" }}
                 >
                   Pet's Species
                 </Typography>
-                <FormControl
-                  margin="normal"
-                  required
-                  fullWidth
-                  style={{ marginTop: "8px" }}
+                <Paper
+                  variant="outlined"
+                  elevation={3}
+                  style={{
+                    borderRadius: "6px",
+                    overflow: "hidden",
+                    height: "30px",
+                  }}
                 >
-                  <Select
-                    id="pet-species"
-                    native
+                  <FormControl
+                    margin="normal"
+                    required
                     fullWidth
-                    inputProps={{
-                      name: "species",
-                      id: "species-native-required",
-                    }}
+                    className={styles.formControlDropdown}
                   >
-                    <option value="">Select Species</option>
-                    <option value="dog">Dog</option>
-                    <option value="cat">Cat</option>
-                    <option value="bird">Bird</option>
-                  </Select>
-                </FormControl>
+                    <Select
+                      id="pet-species"
+                      native
+                      fullWidth
+                      inputProps={{
+                        name: "species",
+                        id: "species-native-required",
+                      }}
+                    >
+                      <option value="">Select Species</option>
+                      <option value="dog">Dog</option>
+                      <option value="cat">Cat</option>
+                      <option value="bird">Bird</option>
+                    </Select>
+                  </FormControl>
+                </Paper>
               </Grid>
+
               <Grid item xs={8} sm={4}>
                 <Typography
                   align="left"
                   variant="subtitle1"
                   fontWeight="bold"
-                  style={{ fontWeight: "bold", marginTop: "8px" }}
+                  style={{ fontWeight: "bold", marginTop: "24px" }}
                 >
                   Pet's Breed
                 </Typography>
-                <FormControl
-                  margin="normal"
-                  required
-                  fullWidth
-                  style={{ marginTop: "8px" }}
+                <Paper
+                  variant="outlined"
+                  elevation={3}
+                  style={{
+                    borderRadius: "6px",
+                    overflow: "hidden",
+                    height: "30px",
+                  }}
                 >
-                  <Select
-                    id="pet-breed"
-                    native
+                  <FormControl
+                    margin="normal"
+                    required
                     fullWidth
-                    inputProps={{
-                      name: "breed",
-                      id: "breed-native-required",
-                    }}
+                    className={styles.formControlDropdown}
                   >
-                    <option value="">Select Breed</option>
-                    <option value="labrador">Labrador Retriever</option>
-                    <option value="poodle">Poodle</option>
-                    <option value="siamese">Siamese</option>
-                    <option value="persian">Persian</option>
-                    <option value="parakeet">Parakeet</option>
-                    <option value="canary">Canary</option>
-                  </Select>
-                </FormControl>
+                    <Select
+                      id="pet-breed"
+                      native
+                      fullWidth
+                      inputProps={{
+                        name: "breed",
+                        id: "breed-native-required",
+                      }}
+                    >
+                      <option value="">Select Breed</option>
+                      <option value="labrador">Labrador Retriever</option>
+                      <option value="poodle">Poodle</option>
+                      <option value="siamese">Siamese</option>
+                      <option value="persian">Persian</option>
+                      <option value="parakeet">Parakeet</option>
+                      <option value="canary">Canary</option>
+                    </Select>
+                  </FormControl>
+                </Paper>
               </Grid>
               <Grid item xs={8} sm={4}>
                 <Typography
                   align="left"
                   variant="subtitle1"
                   fontWeight="bold"
-                  style={{ fontWeight: "bold", marginTop: "8px" }}
+                  style={{ fontWeight: "bold", marginTop: "24px" }}
                 >
                   Pet's Gender
                 </Typography>
-                <FormControl
-                  margin="normal"
-                  required
-                  fullWidth
-                  style={{ marginTop: "8px" }}
+                <Paper
+                  variant="outlined"
+                  elevation={3}
+                  style={{
+                    borderRadius: "6px",
+                    overflow: "hidden",
+                    height: "30px",
+                  }}
                 >
-                  <Select
-                    id="pet-gender"
-                    native
+                  <FormControl
+                    margin="normal"
+                    required
                     fullWidth
-                    inputProps={{
-                      name: "gender",
-                      id: "gender-native-required",
-                    }}
+                    className={styles.formControlDropdown}
                   >
-                    <option value="">Select Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                  </Select>
-                </FormControl>
+                    <Select
+                      id="pet-gender"
+                      native
+                      fullWidth
+                      inputProps={{
+                        name: "gender",
+                        id: "gender-native-required",
+                      }}
+                    >
+                      <option value="">Select Gender</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                      <option value="other">Other</option>
+                    </Select>
+                  </FormControl>
+                </Paper>
               </Grid>
             </Grid>
             <Grid container spacing={2}>
@@ -528,27 +587,37 @@ const CountryForm = () => {
                   align="left"
                   variant="subtitle1"
                   fontWeight="bold"
-                  style={{ fontWeight: "bold", marginTop: "8px" }}
+                  style={{ fontWeight: "bold", marginTop: "24px" }}
                 >
                   Length
                 </Typography>
-                <FormControl
-                  margin="normal"
-                  required
-                  fullWidth
-                  style={{ marginTop: "8px" }}
+                <Paper
+                  variant="outlined"
+                  elevation={3}
+                  style={{
+                    marginTop: "8px",
+                    height: "40px",
+                    borderRadius: "6px",
+                  }}
                 >
-                  <Input
-                    id="pet-length"
-                    type="number"
-                    placeholder="10"
-                    endAdornment={
-                      <InputAdornment position="end">cm</InputAdornment>
-                    }
+                  <FormControl
+                    margin="normal"
+                    required
                     fullWidth
-                    inputProps={{ min: 0 }}
-                  />
-                </FormControl>
+                    style={{ marginTop: "8px" }}
+                  >
+                    <Input
+                      id="pet-length"
+                      type="number"
+                      placeholder="10"
+                      endAdornment={
+                        <InputAdornment position="end">cm</InputAdornment>
+                      }
+                      fullWidth
+                      inputProps={{ min: 0 }}
+                    />
+                  </FormControl>
+                </Paper>
               </Grid>
 
               <Grid item xs={8} sm={3}>
@@ -556,27 +625,37 @@ const CountryForm = () => {
                   align="left"
                   variant="subtitle1"
                   fontWeight="bold"
-                  style={{ fontWeight: "bold", marginTop: "8px" }}
+                  style={{ fontWeight: "bold", marginTop: "24px" }}
                 >
                   Width
                 </Typography>
-                <FormControl
-                  margin="normal"
-                  required
-                  fullWidth
-                  style={{ marginTop: "8px" }}
+                <Paper
+                  variant="outlined"
+                  elevation={3}
+                  style={{
+                    marginTop: "8px",
+                    height: "40px",
+                    borderRadius: "6px",
+                  }}
                 >
-                  <Input
-                    id="pet-width"
-                    type="number"
-                    placeholder="10"
-                    endAdornment={
-                      <InputAdornment position="end">cm</InputAdornment>
-                    }
+                  <FormControl
+                    margin="normal"
+                    required
                     fullWidth
-                    inputProps={{ min: 0 }}
-                  />
-                </FormControl>
+                    style={{ marginTop: "8px" }}
+                  >
+                    <Input
+                      id="pet-width"
+                      type="number"
+                      placeholder="10"
+                      endAdornment={
+                        <InputAdornment position="end">cm</InputAdornment>
+                      }
+                      fullWidth
+                      inputProps={{ min: 0 }}
+                    />
+                  </FormControl>
+                </Paper>
               </Grid>
 
               <Grid item xs={8} sm={3}>
@@ -584,27 +663,37 @@ const CountryForm = () => {
                   align="left"
                   variant="subtitle1"
                   fontWeight="bold"
-                  style={{ fontWeight: "bold", marginTop: "8px" }}
+                  style={{ fontWeight: "bold", marginTop: "24px" }}
                 >
                   Height
                 </Typography>
-                <FormControl
-                  margin="normal"
-                  required
-                  fullWidth
-                  style={{ marginTop: "8px" }}
+                <Paper
+                  variant="outlined"
+                  elevation={3}
+                  style={{
+                    marginTop: "8px",
+                    height: "40px",
+                    borderRadius: "6px",
+                  }}
                 >
-                  <Input
-                    id="pet-height"
-                    type="number"
-                    placeholder="10"
-                    endAdornment={
-                      <InputAdornment position="end">cm</InputAdornment>
-                    }
+                  <FormControl
+                    margin="normal"
+                    required
                     fullWidth
-                    inputProps={{ min: 0 }}
-                  />
-                </FormControl>
+                    style={{ marginTop: "8px" }}
+                  >
+                    <Input
+                      id="pet-height"
+                      type="number"
+                      placeholder="10"
+                      endAdornment={
+                        <InputAdornment position="end">cm</InputAdornment>
+                      }
+                      fullWidth
+                      inputProps={{ min: 0 }}
+                    />
+                  </FormControl>
+                </Paper>
               </Grid>
 
               <Grid item xs={8} sm={3}>
@@ -612,106 +701,130 @@ const CountryForm = () => {
                   align="left"
                   variant="subtitle1"
                   fontWeight="bold"
-                  style={{ fontWeight: "bold", marginTop: "8px" }}
+                  style={{ fontWeight: "bold", marginTop: "24px" }}
                 >
                   Weight
                 </Typography>
-                <FormControl
-                  margin="normal"
-                  required
-                  fullWidth
-                  style={{ marginTop: "8px" }}
+                <Paper
+                  variant="outlined"
+                  elevation={3}
+                  style={{
+                    marginTop: "8px",
+                    height: "40px",
+                    borderRadius: "6px",
+                  }}
                 >
-                  <Input
-                    id="pet-weight"
-                    type="number"
-                    placeholder="10"
-                    endAdornment={
-                      <InputAdornment position="end">kg</InputAdornment>
-                    }
+                  <FormControl
+                    margin="normal"
+                    required
                     fullWidth
-                    inputProps={{ min: 0 }}
+                    style={{ marginTop: "8px" }}
+                  >
+                    <Input
+                      id="pet-weight"
+                      type="number"
+                      placeholder="10"
+                      endAdornment={
+                        <InputAdornment position="end">kg</InputAdornment>
+                      }
+                      fullWidth
+                      inputProps={{ min: 0 }}
+                    />
+                  </FormControl>
+                </Paper>
+              </Grid>
+              <Grid item xs={12} sm={12} style={{ paddingBottom: "0" }}>
+                <div className={styles.divider} />
+                <Typography
+                  style={{ fontWeight: "bold", marginTop: "10px" }}
+                  fontWeight="bold"
+                  align="left"
+                  variant="h6"
+                  gutterBottom
+                >
+                  Pet Requirements
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={12} style={{ paddingBottom: "0" }}>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  {data.PetMicrochip === "Yes" && (
+                    <>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={isMicrochipped}
+                            onChange={handleIsMicrochippedChange}
+                          />
+                        }
+                        label="Is the pet microchipped?"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={hasTattoo}
+                            onChange={handleHasTattooChange}
+                          />
+                        }
+                        label="Does the pet have a tattoo?"
+                      />
+                    </>
+                  )}
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={hasVaccination}
+                        onChange={handleHasVaccinationChange}
+                      />
+                    }
+                    label={`Is the ${pet} vaccinated for ${requiredVaccinations.replaceAll(
+                      ",",
+                      ", "
+                    )}?`}
                   />
-                </FormControl>
+                  {pet === "Dog" && (
+                    <FormControl margin="normal" style={{ width: "40%" }}>
+                      <InputLabel htmlFor="rabies-date" shrink>
+                        When was the rabbies vaccine made?
+                      </InputLabel>
+                      <Input
+                        id="rabies-date"
+                        type="date"
+                        value={rabiesDate}
+                        onChange={handleRabiesDurationChange}
+                      />
+                    </FormControl>
+                  )}
+                  {data.RabiesTiterTest === "Yes" && (
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={hasRabiesTiterTest}
+                          onChange={handleHasRabiesTiterTestChange}
+                          name="hasRabiesTiterTest"
+                          color="primary"
+                        />
+                      }
+                      label="Does the pet have rabies titer test?"
+                    />
+                  )}
+
+                  {data.TicksAndTapewormTreatment === "Yes" ? (
+                    <>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={hasTicksAndTapewormTreatment}
+                            onChange={handleHasTicksAndTapewormTreatmentChange}
+                          />
+                        }
+                        label="Does the pet have ticks and tapeworm treatment?"
+                      />
+                      <br />
+                    </>
+                  ) : null}
+                </div>
               </Grid>
             </Grid>
-            {data.PetMicrochip === "Yes" && (
-              <>
-              
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={isMicrochipped}
-                      onChange={handleIsMicrochippedChange}
-                    />
-                  }
-                  label="Is the pet microchipped?"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={hasTattoo}
-                      onChange={handleHasTattooChange}
-                    />
-                  }
-                  label="Does the pet have a tattoo?"
-                />
-              </>
-            )}
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={hasVaccination}
-                  onChange={handleHasVaccinationChange}
-                />
-              }
-              label={`Is the ${pet} vaccinated for ${requiredVaccinations.replaceAll(
-                ",",
-                ", "
-              )}?`}
-            />
-            {pet === "Dog" && (
-              <FormControl margin="normal" style={{ width: "40%" }}>
-                <InputLabel htmlFor="rabies-date" shrink>
-                  When was the rabbies vaccine made?
-                </InputLabel>
-                <Input
-                  id="rabies-date"
-                  type="date"
-                  value={rabiesDate}
-                  onChange={handleRabiesDurationChange}
-                />
-              </FormControl>
-            )}
-            {data.RabiesTiterTest === "Yes" && (
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={hasRabiesTiterTest}
-                    onChange={handleHasRabiesTiterTestChange}
-                    name="hasRabiesTiterTest"
-                    color="primary"
-                  />
-                }
-                label="Does the pet have rabies titer test?"
-                labelPlacement="start"
-              />
-            )}
-
-            {data.TicksAndTapewormTreatment === "Yes" ? (
-              <>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={hasTicksAndTapewormTreatment}
-                      onChange={handleHasTicksAndTapewormTreatmentChange}
-                    />
-                  }
-                  label="Does the pet have ticks and tapeworm treatment?"
-                />
-                <br />
-              </>
-            ) : null}
 
             <Button
               type="submit"
@@ -732,14 +845,18 @@ const CountryForm = () => {
                 (e.currentTarget.style.backgroundColor = "#FF3C15")
               }
             >
-              Generate PDF
+              Download pet travel document
             </Button>
           </form>
           {/* <Footer stepNumber={2} /> */}
         </div>
       )}
       {popupMessage && (
-        <Dialog open={true} onClose={() => setPopupMessage("")}>
+        <Dialog
+          style={{ zIndex: "4000" }}
+          open={true}
+          onClose={() => setPopupMessage("")}
+        >
           <DialogContent>
             <DialogContentText>{popupMessage}</DialogContentText>
           </DialogContent>
